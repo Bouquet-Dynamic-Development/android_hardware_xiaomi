@@ -1,9 +1,7 @@
-/*
- * SPDX-FileCopyrightText: 2024 The LineageOS Project
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #pragma once
+
+#include <mutex>
+#include <string>
 
 #include <aidl/android/hardware/ir/BnConsumerIr.h>
 
@@ -14,11 +12,16 @@ namespace ir {
 
 class ConsumerIr : public BnConsumerIr {
   public:
+    ConsumerIr();
+
     ::ndk::ScopedAStatus getCarrierFreqs(
-            ::std::vector<::aidl::android::hardware::ir::ConsumerIrFreqRange>* _aidl_return)
-            override;
+            ::std::vector<::aidl::android::hardware::ir::ConsumerIrFreqRange>* _aidl_return) override;
     ::ndk::ScopedAStatus transmit(int32_t carrierFreqHz,
                                   const ::std::vector<int32_t>& pattern) override;
+
+  private:
+    std::string mDevicePath;
+    std::once_flag mDeviceInitOnce;
 };
 
 }  // namespace ir

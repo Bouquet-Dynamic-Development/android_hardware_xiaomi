@@ -6,6 +6,8 @@
 on early-boot
     # IR device
     chown system system /dev/lirc0
+    chown system system /dev/spidev7.1       
+    chmod 0660 /dev/spidev7.1
 
 service vendor.ir-default /vendor/bin/hw/android.hardware.ir-service.xiaomi
     class hal
